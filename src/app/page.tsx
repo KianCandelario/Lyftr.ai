@@ -1,9 +1,9 @@
-import LandingPage from "@/components/pages/landing/pages/LandingPage";
+import LandingPage from "@/app/pages/LandingPage";
 
 export default function Home() {
   return (
-    <div className="h-screen w-screen">
+    <main className="h-dvh w-dvw">
       <LandingPage></LandingPage>
-    </div>
+    </main>
   );
 }
