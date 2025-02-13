@@ -11,7 +11,11 @@ import InfoIcon from "@/components/chat/buttons/InfoIcon"
 import UserMenu from "@/components/chat/buttons/UserMenu"
 import { poppins, inter } from "@/lib/fonts/fonts"
 
-const AppSidebar = () => {
+type userEmail = {
+    email: string
+}
+
+const AppSidebar = ( { email }: userEmail ) => {
     return ( 
         <Sidebar>
             <SidebarHeader className="px-4 pt-3">
@@ -31,7 +35,7 @@ const AppSidebar = () => {
 
             </SidebarContent>
             <SidebarFooter className="pb-3">
-                <UserMenu />
+                <UserMenu email={email} />
             </SidebarFooter>
         </Sidebar>
     );
