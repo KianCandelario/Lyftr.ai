@@ -13,10 +13,14 @@ import { instrument_sans } from "@/lib/fonts/fonts";
 import { MoreHorizontal,  } from "lucide-react"
 import { FileIcon, SpeakerLoudIcon, ChevronDownIcon } from "@radix-ui/react-icons"
 
-const MoreIcon = () => {
+interface MoreIconProps {
+    disabled: boolean
+}
+
+const MoreIcon = ({disabled}: MoreIconProps) => {
     return (
         <Drawer>
-            <DrawerTrigger>
+            <DrawerTrigger disabled={disabled}>
                 <div className="border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-8 rounded-md px-3 text-xs flex justify-center items-center">
                     <MoreHorizontal className="h-5 w-5" />
                     <span className={`${instrument_sans.className} ml-1.5`}>More</span>
