@@ -11,14 +11,18 @@ import {
 } from "@/components/ui/tabs"
 import { Checkbox } from "@/components/ui/checkbox"
 import { poppins, inter, instrument_sans } from "@/lib/fonts/fonts"
-import { Separator } from "@/components/ui/separator"
-import Image from "next/image"
 import { login, signup } from "@/app/landing/login/actions"
 import { useState } from "react"
 import { usePasswordMatch } from "@/hooks/usePasswordMatch"
 import { usePasswordValidator } from "@/hooks/usePasswordValidator"
 import { toast } from "sonner"
 import { redirect } from 'next/navigation'
+import {
+  Alert,
+  AlertTitle,
+  AlertDescription
+} from "@/components/ui/alert"
+import { AlertTriangleIcon } from "lucide-react"
 
 
 export function AccountTab() {
@@ -153,27 +157,6 @@ export function AccountTab() {
             </Button>
         </div>
 
-        <div className="my-7 flex justify-center items-center">
-            <Separator orientation="horizontal" className="w-[43%] " />
-            <span className={`mx-5 font-bold text-xs ${poppins.className}`}>or</span>
-            <Separator orientation="horizontal" className="w-[43%]" />
-        </div>
-
-        <div className="w-full">
-          <Button 
-            variant="outline" 
-            className={`${inter.className} text-xs w-full font-bold`}
-            formAction="">
-              <Image 
-                src="assets/icons8-google.svg"
-                width={20}
-                height={20}
-                alt="Google Icon"
-              />
-              Sign in with Google
-          </Button>
-        </div>
-
       </form>
 
       </TabsContent>
@@ -233,7 +216,7 @@ export function AccountTab() {
                 }
               }
             />
-            { isMatch ? ""
+            {/*{ isMatch ? ""
               : 
                 <div>
                   <span className={`${instrument_sans.className} text-[0.70rem] text-red-500 mt-2 italic`}>
@@ -248,6 +231,22 @@ export function AccountTab() {
                     {error_Valid_Message}
                   </span>
                 </div>
+            }*/
+             isMatch && isValid ? ""
+              :
+              <Alert className="mt-3">
+                <AlertTriangleIcon />
+                <AlertTitle className={`${instrument_sans.className} font-bold`}>Oops! Something's wrong!</AlertTitle>
+                <AlertDescription className={`${instrument_sans.className} text-xs`}>
+                  {
+                    isMatch ? ""
+                    : errorMessage
+                  }  { !isMatch && !isValid ? <br/ > : "" }  {
+                    isValid ? "" :
+                    error_Valid_Message
+                  }
+                </AlertDescription>
+              </Alert>  
             }
           </div>
 
@@ -275,27 +274,6 @@ export function AccountTab() {
             disabled={!isValid || !isMatch}>
               {loading ? "Registering..." : "Register"}
             </Button>
-        </div>
-
-        <div className="my-5 flex justify-center items-center">
-            <Separator orientation="horizontal" className="w-[43%] " />
-            <span className={`mx-5 font-bold text-xs ${poppins.className}`}>or</span>
-            <Separator orientation="horizontal" className="w-[43%]" />
-        </div>
-
-        <div className="w-full">
-          <Button 
-            variant="outline" 
-            className={`${inter.className} text-xs w-full font-bold`}
-            formAction="">
-              <Image 
-                src="assets/icons8-google.svg"
-                width={20}
-                height={20}
-                alt="Google Icon"
-              />
-              Sign up with Google
-          </Button>
         </div>
 
       </form>
