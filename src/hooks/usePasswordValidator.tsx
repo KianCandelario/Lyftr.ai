@@ -12,7 +12,7 @@ export const usePasswordValidator = (password: string, confirmPassword: string) 
         
             if (!has8Characters || !has1UpperCase || !has1Number) {
                 setIsValid(false);
-                setError_Valid_Message("*Password must be at least 8 characters long, has one uppercase letter, and one number.");
+                setError_Valid_Message("> Password must be at least 8 characters long, has one uppercase letter, and one number.");
             }
             else {
                 setIsValid(true);

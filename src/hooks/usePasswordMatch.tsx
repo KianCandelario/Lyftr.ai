@@ -12,7 +12,7 @@ export const usePasswordMatch = (password: string, confirmPassword: string) => {
             }
             else {
                 setIsMatch(false)
-                setErrorMessage("*The passwords do not match");
+                setErrorMessage("> The passwords do not match");
             }
         }
         else {
