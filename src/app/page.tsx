@@ -1,9 +1,9 @@
+import LandingPage from "@/app/landing/LandingPage";
+
 export default function Home() {
   return (
-    <div className="">
-      <main className="">
-        
-      </main>
-    </div>
+    <main className="h-dvh w-dvw">
+      <LandingPage></LandingPage>
+    </main>
   );
 }
