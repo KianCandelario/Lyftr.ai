@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -71,13 +71,12 @@ class ChatRequest(BaseModel):
     prompt: str
     messages: List[Dict[str, Any]]  # List of previous messages
 
-# Initialize FastAPI
 app = FastAPI()
 
 # Enable CORS (Allows Next.js to make requests to FastAPI)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Adjust this to match your Next.js app's origin
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
