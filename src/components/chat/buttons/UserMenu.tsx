@@ -9,14 +9,16 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { UserCogIcon } from "lucide-react"
 import { instrument_sans } from "@/lib/fonts/fonts"
@@ -40,7 +42,7 @@ const UserMenu = ( { email }: userEmail ) => {
     }
 
     return (
-        <Dialog>
+        <AlertDialog>
             <DropdownMenu>
                 <DropdownMenuTrigger className="rounded-lg">
                     <div className="max-w-full flex items-center py-2 bg-zinc-200 rounded-lg hover:bg-zinc-100 transition-all ease-in-out">
@@ -71,26 +73,27 @@ const UserMenu = ( { email }: userEmail ) => {
 
                     <DropdownMenuSeparator />
                     
-                    <DialogTrigger asChild>
+                    <AlertDialogTrigger asChild>
                         <DropdownMenuItem className={`flex items-center ${instrument_sans.className}`}>
                             <LogOutIcon />
                             Log out
                         </DropdownMenuItem>
-                    </DialogTrigger>
+                    </AlertDialogTrigger>
                 </DropdownMenuContent>
             </DropdownMenu>
-            <DialogContent>
-                <DialogHeader>
-                <DialogTitle>Are you absolutely sure?</DialogTitle>
-                <DialogDescription>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
                     You're about to go back to the landing page. Are you sure you want to log out of the web app?
-                </DialogDescription>
-                </DialogHeader>
-                <DialogFooter>
-                    <Button variant="destructive" size="sm" onClick={handleLogOut}>Sign out</Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+                </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleLogOut}>Sign out</AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
     );
 }
  
