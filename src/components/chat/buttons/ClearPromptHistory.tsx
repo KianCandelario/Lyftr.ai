@@ -43,7 +43,7 @@ const ClearPromptHistory = ({user_id}: ClearPromptHistoryProps) => {
 
     return ( 
         <AlertDialog>
-            <AlertDialogTrigger className="hover:bg-zinc-100 px-2 py-1 rounded-md">
+            <AlertDialogTrigger className="hover:bg-zinc-200 transition-all ease-in-out duration-300 px-2 py-1 rounded-md">
                 <HistoryIcon width={18} height={18} className="stroke-red-600" />
             </AlertDialogTrigger>
             <AlertDialogContent>
