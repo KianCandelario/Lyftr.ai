@@ -18,8 +18,6 @@ interface ClearPromptHistoryProps {
 }
 
 const ClearPromptHistory = ({user_id}: ClearPromptHistoryProps) => {
-    const [historyCleared, setHistoryCleared] = useState<boolean>(() => false);
-
     const handleDeleteHistory = async () => {
         const res = await fetch('/api/history/clear', {
             method: 'POST',
@@ -32,14 +30,7 @@ const ClearPromptHistory = ({user_id}: ClearPromptHistoryProps) => {
         if (!res.ok) {
             throw new Error("Failed to delete history")
         }
-        setHistoryCleared(true)
     }
-
-    useEffect(() => {
-        if (historyCleared === true) {
-            window.location.reload()
-        }
-    }, [historyCleared]);
 
     return ( 
         <AlertDialog>
