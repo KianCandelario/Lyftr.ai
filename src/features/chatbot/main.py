@@ -76,7 +76,7 @@ app = FastAPI()
 # Enable CORS (Allows Next.js to make requests to FastAPI)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["https://lyftr-ai.vercel.app/"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
