@@ -4,22 +4,31 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient()
+    const supabase = await createClient()
 
-  const { data, error } = await supabase.auth.getUser()
-  if (error || !data?.user) {
-      redirect('/')
-  }
+    const { data, error } = await supabase.auth.getUser()
+    if (error || !data?.user) {
+        redirect('/')
+    }
 
-  let userEmail: string = data.user.email!
+    const userData = {
+        id: data.user.id,
+        email: data.user.email!
+    }
 
-  return (
-    <SidebarProvider>
-      <AppSidebar email={userEmail} />
-      <main className="h-dvh w-dvw">
-        <SidebarTrigger className="mt-2.5 ml-2 absolute" />
-        {children}
-      </main>
-    </SidebarProvider>
-  )
+    return (
+        <SidebarProvider>
+            <AppSidebar email={userData.email} user_id={userData.id} />
+            <main className="h-dvh w-dvw">
+                <SidebarTrigger className="mt-2.5 ml-2 absolute" />
+                <div 
+                    data-user-id={userData.id}
+                    data-user-email={userData.email}
+                    className="w-full h-full flex justify-center items-center"
+                >
+                    {children}
+                </div>
+            </main>
+        </SidebarProvider>
+    )
 }
