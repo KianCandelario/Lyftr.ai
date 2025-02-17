@@ -9,18 +9,12 @@ import {
     SidebarGroupContent,
     SidebarHeader,
 } from "@/components/ui/sidebar";
-import {
- Tooltip,
- TooltipProvider,
- TooltipContent,
- TooltipTrigger
-} from "@/components/ui/tooltip"
+import { createClient } from '@supabase/supabase-js'
 import InfoIcon from "@/components/chat/buttons/InfoIcon";
 import UserMenu from "@/components/chat/buttons/UserMenu";
 import { ChevronRight } from "lucide-react"
 import { poppins, inter, instrument_sans } from "@/lib/fonts/fonts";
 import ClearPromptHistory from "@/components/chat/buttons/ClearPromptHistory";
-import DeletePrompt from "@/components/chat/buttons/DeletePrompt"
 
 
 type Conversation = {
@@ -39,28 +33,71 @@ const AppSidebar = ({ email, user_id }: SidebarProps) => {
     const [loading, setLoading] = useState<boolean>(() => true);
     const [error, setError] = useState<string | null>(() => "");
 
+    // Initialize Supabase client
+    const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+
     useEffect(() => {
-        
-        const fetchConversation = async () => {
+        // Initial fetch of conversations
+        const fetchConversations = async () => {
             try {
-                const response = await fetch(`/api/conversations?user_id=${user_id}`)
-
-                if (!response.ok) {
-                    throw new Error("Error fetching conversation")
-                }
-
+                const response = await fetch(`/api/conversations?user_id=${user_id}`);
+                if (!response.ok) throw new Error("Error fetching conversations");
                 const data = await response.json();
-                setConversations(data)
+                setConversations(data);
             } catch (e) {
-                console.log("Error fetching conversation: " + e)
-                setError("Error fetching conversation")
-            } finally { 
+                console.error("Error fetching conversations:", e);
+                setError("Error fetching conversations");
+            } finally {
                 setLoading(false);
             }
-        }
+        };
 
-        fetchConversation();
-    }, [user_id]);
+        // Set up real-time subscription
+        const subscription = supabase
+            .channel('conversations')
+            .on(
+                'postgres_changes',
+                {
+                    event: '*', // Listen to all events (insert, update, delete)
+                    schema: 'public',
+                    table: 'conversations',
+                    filter: `user_id=eq.${user_id}` // Only listen to changes for current user
+                },
+                (payload) => {
+                    switch (payload.eventType) {
+                        case 'INSERT':
+                            setConversations(prev => [...prev, payload.new as Conversation]);
+                            break;
+                        case 'DELETE':
+                            setConversations(prev => 
+                                prev.filter(conv => conv.prompt_id !== payload.old.prompt_id)
+                            );
+                            break;
+                        case 'UPDATE':
+                            setConversations(prev =>
+                                prev.map(conv =>
+                                    conv.prompt_id === payload.new.prompt_id
+                                        ? { ...conv, ...payload.new }
+                                        : conv
+                                )
+                            );
+                            break;
+                    }
+                }
+            )
+            .subscribe();
+
+        // Initial fetch
+        fetchConversations();
+
+        // Cleanup subscription on unmount
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, [user_id, supabase]);
 
     const isEmpty = () => {
         if (conversations.length === 0) {

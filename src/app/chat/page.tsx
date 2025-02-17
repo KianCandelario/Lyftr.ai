@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import MoreIcon from "@/components/chat/buttons/MoreIcon";
 import StartNewConversation from "@/components/chat/buttons/StartNewConversation";
 import ReactMarkdown from "react-markdown";
+import { createClient } from "@supabase/supabase-js";
 
 interface UserData {
   id: string;
@@ -28,7 +29,7 @@ const ChatbotPage = () => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [messageSender, setMessageSender] = useState<string>("user")
+  /*const [messageSender, setMessageSender] = useState<string>("user")*/
   const [error, setError] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
 
@@ -48,7 +49,7 @@ const ChatbotPage = () => {
     }
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (messages.length > 0) {
       const last_message = messages[messages.length - 1];
 
@@ -59,7 +60,42 @@ const ChatbotPage = () => {
         setMessageSender("bot")
       }
     }
-  }, [messages]);
+  }, [messages]);*/
+
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+
+  useEffect(() => {
+      if (!userData?.id) return;
+
+      // Set up real-time subscription for messages
+      const subscription = supabase
+          .channel('messages')
+          .on(
+              'postgres_changes',
+              {
+                  event: '*',
+                  schema: 'public',
+                  table: 'messages',
+                  filter: `user_id=eq.${userData.id}`
+              },
+              (payload) => {
+                  if (payload.eventType === 'INSERT') {
+                      setMessages(prev => [...prev, {
+                          sender: payload.new.sender,
+                          content: payload.new.content
+                      }]);
+                  }
+              }
+          )
+          .subscribe();
+
+      return () => {
+          subscription.unsubscribe();
+      };
+  }, [userData?.id, supabase]);
   
   const fetchExistingMessages = async (userId: string) => {
     try {
