@@ -1,4 +1,4 @@
-import { instrument_sans, inter, poppins } from "@/lib/fonts/fonts";
+import { instrument_sans, poppins } from "@/lib/fonts/fonts";
 import { AccountTab } from "@/components/landing/tab/AccountTab";
 import { MailQuestion } from "lucide-react"
 import { 
@@ -28,14 +28,17 @@ const LandingPage = () => {
             </Button>
           </DialogTrigger>
           <DialogContent>
-            <DialogHeader>
+            <DialogHeader className={`${instrument_sans.className}`}>
               <DialogTitle>Almost There! Verify Your Email</DialogTitle>
               <DialogDescription>
-                We've sent a verification link to your email. Please check your inbox (and spam folder) to complete your sign-up.
+                If you're done signing up, we've sent a verification link to your email. Please check your inbox (and spam folder) to complete your sign-up.
+                <br />
+                <br />
+                <span className="italic">NOTE: You won't be able to log in if you don't confirm your email.</span>
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
-              <DialogClose className="px-3 py-1 rounded-md bg-primary text-primary-foreground shadow hover:bg-primary/90">
+              <DialogClose className={`${instrument_sans.className} text-sm px-4 py-2 rounded-md bg-primary text-primary-foreground shadow hover:bg-primary/90`}>
                 Close
               </DialogClose>
             </DialogFooter>

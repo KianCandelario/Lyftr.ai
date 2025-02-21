@@ -29,7 +29,6 @@ const ChatbotPage = () => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  /*const [messageSender, setMessageSender] = useState<string>("user")*/
   const [error, setError] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
 
@@ -48,19 +47,6 @@ const ChatbotPage = () => {
       }
     }
   }, []);
-
-  /*useEffect(() => {
-    if (messages.length > 0) {
-      const last_message = messages[messages.length - 1];
-
-      if (last_message.sender === userData?.id) {
-        setMessageSender("user")
-      }
-      else {
-        setMessageSender("bot")
-      }
-    }
-  }, [messages]);*/
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

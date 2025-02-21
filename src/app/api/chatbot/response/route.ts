@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
     }));
     
     // 4. Call the FastAPI chatbot endpoint
-    const apiUrl = "http://localhost:8000";
+    const apiUrl = "https://lyftr-ai-api.onrender.com";
     console.log("Calling API at:", `${apiUrl}/chatbot/response`);
     
     let response;

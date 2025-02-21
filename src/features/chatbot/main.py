@@ -37,7 +37,7 @@ prompt_template = ChatPromptTemplate.from_messages(
 
 # Define the message trimmer
 trimmer = trim_messages(
-    max_tokens=512,  # For medium-length conversations
+    max_tokens=1024,  # For medium-length conversations
     strategy="last",  # Keeps the latest messages but may lose long-term contexts
     token_counter=model,
     include_system=True,
@@ -76,7 +76,7 @@ app = FastAPI()
 # Enable CORS (Allows Next.js to make requests to FastAPI)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://lyftr-ai.vercel.app/"],
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -118,10 +118,6 @@ async def chatbot_response(chat_request: ChatRequest):
         return JSONResponse(content={"response": chatbot_response})
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
-class ResetRequest(BaseModel):
-    user_id: Any
 
 # Run the API
 if __name__ == "__main__":
