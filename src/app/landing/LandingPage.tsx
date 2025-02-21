@@ -31,7 +31,7 @@ const LandingPage = () => {
             <DialogHeader className={`${instrument_sans.className}`}>
               <DialogTitle>Almost There! Verify Your Email</DialogTitle>
               <DialogDescription>
-                We've sent a verification link to your email. Please check your inbox (and spam folder) to complete your sign-up.
+                If you're done signing up, we've sent a verification link to your email. Please check your inbox (and spam folder) to complete your sign-up.
                 <br />
                 <br />
                 <span className="italic">NOTE: You won't be able to log in if you don't confirm your email.</span>
